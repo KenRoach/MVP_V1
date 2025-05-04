@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mealkitz</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Custom Styles -->
+  <style>
+    /* styling/styles.css */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa; /* Light grey background */
+      padding-top: 1rem; /* Add padding above the navbar */
+    }
+    .navbar {
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+      background-color: #fff; /* Ensure navbar has a background */
+    }
+    .navbar-brand {
+      font-weight: 600;
+      color: #123A62 !important; /* Custom blue color */
+    }
+    /* Style navbar icons */
+    .navbar .btn-link {
+        color: #123A62 !important; /* Custom blue color */
+        opacity: 0.8;
+        transition: opacity 0.2s ease-in-out;
+    }
+    .navbar .btn-link:hover {
+        opacity: 1;
+    }
+    .btn, .btn-link {
+      outline: none!important;
+      box-shadow: none!important;
+      border: none !important; /* Remove borders added earlier */
+    }
+    /* General button styling (can be adapted per page if needed) */
+    .btn {
+        padding: 1rem 1.5rem; /* Increased padding */
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border-radius: 0.5rem; /* Slightly rounded corners */
+    }
+    /* Apply custom primary color */
+    .btn-primary {
+       background-color: #123A62;
+       color: #fff;
+       /* border-color: #123A62; /* Border removed above */
+    }
+     .btn-primary:hover {
+       background-color: #0e3150; /* Darker shade */
+       color: #fff;
+       /* border-color: #0e3150; */
+    }
+     .btn-outline-primary {
+        /* border-color: #123A62; /* Border removed above */
+        color: #123A62;
+        border-width: 2px; /* Re-add border for outline if needed */
+         border: 2px solid #123A62 !important; /* Explicit border for outline */
+         background-color: transparent;
+    }
+    .btn-outline-primary:hover {
+        background-color: #123A62;
+        color: #fff;
+    }
+    .btn-light {
+        background-color: #fff;
+        border: 1px solid #dee2e6 !important; /* Explicit border for light */
+        color: #000;
+    }
+    .btn-light:hover {
+        background-color: #e9ecef;
+        border-color: #ced4da !important;
+    }
+
+    /* Success button styling */
+    .btn-success {
+      background-color: #198754;
+      border-color: #198754;
+      color: #fff;
+    }
+    .btn-success:hover {
+      background-color: #157347;
+      border-color: #146c43;
+      color: #fff;
+    }
+
+    .lead {
+        color: #6c757d; /* Softer color for tagline */
+    }
+    /* Navbar menu dropdown button color */
+    .dropdown-toggle.btn-outline-primary {
+        color: #123A62;
+        /* border-color: #123A62; */
+    }
+    .dropdown-toggle.btn-outline-primary:hover {
+        background-color: #123A62;
+        color: #fff;
+    }
+    /* E-commerce specific styles */
+    .product-card img { height: 180px; object-fit: cover; }
+    .cart-item img { width: 50px; height: 50px; object-fit: cover; }
+    .logo { height: 40px; } /* Logo height */ 
+  </style>
+</head>
+<body>
+  <!-- Topbar -->
+  <nav class="navbar navbar-light bg-light py-2">
+    <div class="container-fluid px-4">
+      <!-- Brand -->
+      <a class="navbar-brand" href="index.html">Mealkitz</a>
+      <!-- Toggler Button (visible on small screens) -->
+      <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarIcons" aria-controls="navbarIcons" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Action Icons (collapsible) -->
+      <div class="collapse navbar-collapse d-md-flex justify-content-md-end" id="navbarIcons">
+        <div class="d-flex align-items-center mt-2 mt-md-0">
+          <button class="btn btn-link text-dark me-3" title="Notificaciones"><i class="bi bi-bell-fill fs-4"></i></button>
+          <button class="btn btn-link text-dark me-3" title="Compartir"><i class="bi bi-share-fill fs-4"></i></button>
+          <button class="btn btn-link text-dark me-3" title="Buscar"><i class="bi bi-search fs-4"></i></button>
+          <button id="cart-btn" class="btn btn-link position-relative invisible" title="Carrito"> <!-- Cart invisible -->
+            <i class="bi bi-cart-fill fs-4"></i>
+            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Tagline -->
+  <div class="container text-center my-4">
+    <h2 class="mb-4">Cobros Rápidos</h2>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="product-select" class="form-label">Producto</label>
+        <select id="product-select" class="form-select">
+          <option value="" selected>Seleccione un producto</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="price-input" class="form-label">Precio</label>
+        <input id="price-input" type="number" step="0.01" class="form-control">
+      </div>
+    </div>
+
+    <div id="product-details" class="row mt-4" style="display: none;">
+      <div class="col-md-4">
+        <img id="product-image" src="" alt="Imagen del producto" class="img-fluid rounded">
+      </div>
+      <div class="col-md-8">
+        <p>Código: <strong id="detail-code"></strong></p>
+        <p>Precio: $<strong id="detail-price"></strong></p>
+        <p>Margen: <strong id="detail-margin"></strong>%</p>
+        <p>Inventario: <strong id="detail-stock"></strong></p>
+      </div>
+    </div>
+
+    <section class="mt-4">
+      <h5>Método de pago</h5>
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <button id="pay-yappy" class="btn btn-primary">Yappy</button>
+        <button id="pay-cash" class="btn btn-secondary">Efectivo</button>
+        <button id="pay-card" class="btn btn-info text-white">Tarjeta</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const products = [
+        { code: 'P001', name: 'Sushi Rolls', price: 10.5, margin: 30, stock: 15, image: 'https://via.placeholder.com/150?text=Sushi' },
+        { code: 'P002', name: 'Tacos al Pastor', price: 8.0, margin: 25, stock: 20, image: 'https://via.placeholder.com/150?text=Tacos' },
+        { code: 'P003', name: 'Ensalada César', price: 6.0, margin: 35, stock: 10, image: 'https://via.placeholder.com/150?text=Salad' }
+      ];
+      let selectedProduct = null;
+
+      const select = document.getElementById('product-select');
+      const priceInput = document.getElementById('price-input');
+      const details = document.getElementById('product-details');
+      const imgEl = document.getElementById('product-image');
+      const codeEl = document.getElementById('detail-code');
+      const priceEl = document.getElementById('detail-price');
+      const marginEl = document.getElementById('detail-margin');
+      const stockEl = document.getElementById('detail-stock');
+      const scanBtn = document.getElementById('scan-btn');
+
+      // Populate dropdown
+      products.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.code;
+        opt.text = p.name;
+        select.appendChild(opt);
+      });
+
+      function updateDetails(product) {
+        if (!product) {
+          details.style.display = 'none';
+          priceInput.value = '';
+          selectedProduct = null;
+          return;
+        }
+        selectedProduct = product;
+        imgEl.src = product.image;
+        codeEl.textContent = product.code;
+        priceInput.value = product.price.toFixed(2);
+        priceEl.textContent = product.price.toFixed(2);
+        marginEl.textContent = product.margin;
+        stockEl.textContent = product.stock;
+        details.style.display = 'flex';
+      }
+
+      select.addEventListener('change', e => {
+        const prod = products.find(x => x.code === e.target.value) || null;
+        updateDetails(prod);
+      });
+
+      priceInput.addEventListener('input', e => {
+        if (selectedProduct) {
+          const newPrice = parseFloat(e.target.value);
+          if (!isNaN(newPrice)) {
+            selectedProduct.price = newPrice;
+            priceEl.textContent = newPrice.toFixed(2);
+          }
+        }
+      });
+
+      function procesarPago(metodo) {
+        if (!selectedProduct) return alert('Seleccione un producto primero.');
+        const finalPrice = parseFloat(priceInput.value);
+        if (isNaN(finalPrice)) return alert('Precio inválido.');
+        alert(`Pago con ${metodo} por $${finalPrice.toFixed(2)}.`);
+      }
+
+      document.getElementById('pay-yappy').addEventListener('click', () => procesarPago('Yappy'));
+      document.getElementById('pay-cash').addEventListener('click', () => procesarPago('Efectivo'));
+      document.getElementById('pay-card').addEventListener('click', () => procesarPago('Tarjeta'));
+      document.getElementById('pay-ach').addEventListener('click', () => procesarPago('ACH Express'));
+
+      // Scan button (placeholder)
+      scanBtn.addEventListener('click', () => {
+        alert('Función de escaneo no implementada aún.');
+      });
+    });
+  </script>
+</body>
+</html>
